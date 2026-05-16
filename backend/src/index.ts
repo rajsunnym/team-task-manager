@@ -2,16 +2,20 @@ import 'dotenv/config';
 import express from 'express';
 import cors from 'cors';
 import path from 'path';
+
 import connectDB from './config/db';
+
 import authRoutes from './routes/auth.routes';
 import projectRoutes from './routes/project.routes';
 import taskRoutes from './routes/task.routes';
 import dashboardRoutes from './routes/dashboard.routes';
 
 const app = express();
-const PORT = process.env.PORT || 5000;
+
+const PORT = process.env.PORT || 8080;
 
 app.use(cors());
+
 app.use(express.json());
 
 app.get('/api/health', (_req, res) => {
@@ -25,23 +29,39 @@ app.get('/api/health', (_req, res) => {
 });
 
 app.use('/api/auth', authRoutes);
+
 app.use('/api/projects', projectRoutes);
+
 app.use('/api/projects/:id/tasks', taskRoutes);
+
 app.use('/api/dashboard', dashboardRoutes);
 
-if (process.env.NODE_ENV === 'production') {
-    const frontendPath = path.join(__dirname, '../../frontend/dist');
-    app.use(express.static(frontendPath));
-    app.get('*', (_req, res) => {
-        res.sendFile(path.join(frontendPath, 'index.html'));
-    });
-}
+/* ---------- FRONTEND BUILD ---------- */
+
+const frontendPath = path.join(__dirname, '../../frontend/dist');
+
+app.use(express.static(frontendPath));
+
+app.get('*', (_req, res) => {
+    res.sendFile(path.join(frontendPath, 'index.html'));
+});
+
+/* ---------- DATABASE ---------- */
 
 connectDB()
     .then(() => {
-        app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+        app.listen(PORT, () => {
+
+            console.log(`Server running on port ${PORT}`);
+
+        });
+
     })
     .catch((err) => {
+
         console.error('Failed to connect to MongoDB:', err.message);
+
         process.exit(1);
+
     });
