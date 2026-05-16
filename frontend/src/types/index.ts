@@ -2,6 +2,7 @@ export interface User {
   _id: string;
   name: string;
   email: string;
+  role?: string;
 }
 
 export type MemberRole = 'Admin' | 'Member';
@@ -25,6 +26,7 @@ export interface Project {
 }
 
 export type TaskStatus = 'To Do' | 'In Progress' | 'Done';
+
 export type TaskPriority = 'Low' | 'Medium' | 'High';
 
 export interface Task {
@@ -49,5 +51,9 @@ export interface DashboardStats {
     'In Progress': number;
     Done: number;
   };
-  tasksByUser: Array<{ userId: string; name: string; count: number }>;
+  tasksByUser: Array<{
+    userId: string;
+    name: string;
+    count: number;
+  }>;
 }
