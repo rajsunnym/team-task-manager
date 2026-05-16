@@ -242,15 +242,13 @@ export default function Dashboard() {
               </h3>
 
               <span
-                className={`inline-block mt-1 px-2 py-1 text-xs rounded-lg font-medium ${user?.role === 'admin'
+                className={`px-4 py-1 rounded-full text-sm font-semibold ${user?.role === 'admin'
                   ? 'bg-purple-600 text-white'
                   : 'bg-slate-300 dark:bg-slate-700 text-slate-800 dark:text-slate-200'
                   }`}
               >
 
-                {user?.role === 'admin'
-                  ? 'Admin'
-                  : 'Member'}
+                Admin
 
               </span>
 
